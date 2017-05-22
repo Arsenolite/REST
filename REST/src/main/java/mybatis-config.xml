@@ -34,6 +34,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
        </environment>
    </environments>
    <mappers>
-       <mapper class="com.qhs.DB_crud.mapper.StudentMapper"/>
+       <mapper class="com.qhs.rest.mapper.StudentMapper"/>
    </mappers>
 </configuration>
