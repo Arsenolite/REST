@@ -69,7 +69,7 @@ public class StudentController {
 		return mav;
 	}
 	//先搞定一次单个添加，再写一个批量添加
-	@RequestMapping(value = "/students", method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/students", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public ModelAndView addStudent(@RequestBody Student student) throws IOException{
 		// 指定mapper
@@ -77,7 +77,9 @@ public class StudentController {
 						.openSession().getMapper(StudentMapper.class);
 				ModelAndView mav = new ModelAndView("students");
 				JSONObject jo = new JSONObject();
+				//jo.put("Student", student.getAim());
 				int flag = mapper.add(student);
+				
 				if(flag>0){
 					jo.put("Success", "true");
 					jo.put("Added", flag);
