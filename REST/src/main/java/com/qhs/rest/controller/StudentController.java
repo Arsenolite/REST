@@ -77,9 +77,7 @@ public class StudentController {
 						.openSession().getMapper(StudentMapper.class);
 				ModelAndView mav = new ModelAndView("students");
 				JSONObject jo = new JSONObject();
-				//jo.put("Student", student.getAim());
 				int flag = mapper.add(student);
-				
 				if(flag>0){
 					jo.put("Success", "true");
 					jo.put("Added", flag);
