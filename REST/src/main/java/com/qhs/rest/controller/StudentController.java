@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -60,23 +61,46 @@ public class StudentController {
 		}
 
 		// 传回list
+		//服务端跳转到students.jsp，在jsp中使用EL表达式显示查询到的Student对象
 		ModelAndView mav = new ModelAndView("students");
 		JSONArray json = new JSONArray();
 		json.put(list);
 		mav.addObject("msg", json);
 		return mav;
 	}
-	//在@RequestMapping中添加produces来进行编码转化，无效？
+	//先搞定一次单个添加，再写一个批量添加
+	@RequestMapping(value = "/students", method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ModelAndView addStudent(@RequestBody Student student) throws IOException{
+		// 指定mapper
+				StudentMapper mapper = new SqlSessionFactoryBuilder().build(Resources.getResourceAsStream("mybatis-config.xml"))
+						.openSession().getMapper(StudentMapper.class);
+				ModelAndView mav = new ModelAndView("students");
+				JSONObject jo = new JSONObject();
+				int flag = mapper.add(student);
+				if(flag>0){
+					jo.put("Success", "true");
+					jo.put("Added", flag);
+				}else{
+					jo.put("Success", "false");
+					jo.put("Added", flag);
+				}
+				mav.addObject("msg", jo);
+				return mav;
+	}
+	
+	//在@RequestMapping中添加produces来进行编码转化
 	@RequestMapping(value = "/student/{name}", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public ModelAndView getStudentsByName(@PathVariable String name,@RequestParam(value = "pn", required = false, defaultValue = "1") Integer pn) throws IOException{
 		//一句话Mapper
 		//疑问：每个方法里都要写一个Mapper，看起来复用性比较低，后期是不是可以用Spring插进来。。
+		//看其他人的解决方案里写了一个单独的Service类来处理。。
 		StudentMapper mapper = new SqlSessionFactoryBuilder().build(Resources.getResourceAsStream("mybatis-config.xml"))
 				.openSession().getMapper(StudentMapper.class);
 		List<Student> list = new ArrayList<Student>();
 		//使用PathVariable注解将RequestMapping里#{name}传入方法体内，并且作为参数传入mapper，取回list
-		System.out.println(name);
+		//System.out.println(name);
 		list = mapper.listByName(name,(pn - 1) * 10, pn * 10);
 		//传回结果list
 		ModelAndView mav = new ModelAndView("student");

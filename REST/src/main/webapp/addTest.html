@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+<!--在文档加载的时候执行函数-->
+    $(document).ready(function(){    
+        var student={"name":"韩立","qq":"1234565","major":"JAVA工程师","start_date":"20110101","onlineclass":"123","onlineno":"456","diarylink":"www.baidu.com","aim":"渡劫飞仙","recommender":"王林","censor":"王林","wherefrom":"谁知道"};
+        
+        var student2 = {
+        	    "name": "韩立",
+        	    "qq": "12345566",
+        	    "major": "JAVA工程师",
+        	    "start_date": "20110101",
+        	    "school": "凡人修仙传",
+        	    "onlineclass": "123",
+        	    "onlineno": "456",
+        	    "diarylink": "www.baidu.com",
+        	    "aim": "渡劫升仙",
+        	    "recommender": "忘语",
+        	    "censor": "忘语",
+        	    "wherefrom": "起点中文网"
+        	}
+        $.ajax({ 
+            type:"POST", 
+            url:"/students", 
+            dataType:"json",      
+            contentType:"application/json",  
+            <!--JSON.stringify(obj)将JSON转为字符串。-->
+            data:JSON.stringify(student2), 
+            success:function(data){                  
+            }
+         }); 
+    });  
+</script>
+<body>
+
+</body>
+</html>
