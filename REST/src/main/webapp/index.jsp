@@ -1,5 +1,5 @@
 <html>
 <body>
-${msg}
+welcome
 </body>
 </html>

@@ -20,30 +20,36 @@ public interface StudentMapper {
 
 	// 根据ID精确查询
 	@Select("select * from signup where id= #{id}")
-	public Student get(int id);
+	public Student getStudentById(@Param("id") int id);
 
 	// 添加
-	@Insert("INSERT INTO signup VALUES "
+	@Insert("INSERT INTO `signup` VALUES "
 			+ "(UNIX_TIMESTAMP(now())*1000,UNIX_TIMESTAMP(now())*1000,null,#{student.name},#{student.qq},#{student.major},#{student.start_date},"
 			+ "#{student.school},#{student.onlineclass},#{student.onlineno},#{student.diarylink},"
 			+ "#{student.aim},#{student.recommender},#{student.censor},#{student.wherefrom})")
 	public int add(@Param("student") Student student);
 
 	// 删除
-	@Delete("delete * from signup where id = #{id}")
-	public boolean delete(int id);
+	@Delete("delete from signup where id = #{id}")
+	public void delete(@Param("id") int id);
 
 	// 修改
-	@Update("<script> " + "update signup" + "update_at = (UNIX_TIMESTAMP(now())*1000" + "<set>"
-			+ "<if test=\"name != null\">name=#{name},</if>" + "<if test=\"qq != null\">price=#{qq},</if>"
-			+ "<if test=\"major != null\">price=#{major},</if>"
-			+ "<if test=\"start_date != null\">price=#{start_date},</if>"
-			+ "<if test=\"school != null\">price=#{school},</if>"
-			+ "<if test=\"onlineclass != null\">price=#{onlineclass},</if>"
-			+ "<if test=\"onlineno != null\">price=#{onlineno},</if>"
-			+ "<if test=\"diarylink != null\">price=#{diarylink},</if>" + "<if test=\"aim != null\">price=#{aim},</if>"
-			+ "<if test=\"recommender != null\">price=#{recommender},</if>"
-			+ "<if test=\"censor != null\">price=#{censor},</if>"
-			+ "<if test=\"wherefrom != null\">price=#{wherefrom},</if>" + "</set>" + "where id = #{id}" + "</script>")
-	public boolean update(Student student);
+	@Update("<script>" + "update `signup`" 
+			+ "<set>"
+			+ " update_at = UNIX_TIMESTAMP(now())*1000," 
+			+ "<if test=\"student.name != null\">name=#{student.name},</if>" 
+			+ "<if test=\"student.qq != null\">qq=#{student.qq},</if>"
+			+ "<if test=\"student.major != null\">major=#{student.major},</if>"
+			+ "<if test=\"student.start_date != null\">start_date=#{student.start_date},</if>"
+			+ "<if test=\"student.school != null\">school=#{student.school},</if>"
+			+ "<if test=\"student.onlineclass != null\">onlineclass=#{student.onlineclass},</if>"
+			+ "<if test=\"student.onlineno != null\">onlineno=#{student.onlineno},</if>"
+			+ "<if test=\"student.diarylink != null\">diarylink=#{student.diarylink},</if>" 
+			+ "<if test=\"student.aim != null\">aim=#{student.aim},</if>"
+			+ "<if test=\"student.recommender != null\">recommender=#{student.recommender},</if>"
+			+ "<if test=\"student.censor != null\">censor=#{student.censor},</if>"
+			+ "<if test=\"student.wherefrom != null\">wherefrom=#{student.wherefrom}</if>" 
+			+ "</set>" 
+			+ " where id = #{student.id}" + "</script>")
+	public int update(@Param("student") Student student); 
 }
